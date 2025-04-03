@@ -31,6 +31,8 @@ jobs:
               core.setFailed("Код-рев’ю не схвалено");
             } else {
               console.log("Код-рев’ю схвалено");
+            }
+
 
   analysis:
     runs-on: ubuntu-latest
