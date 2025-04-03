@@ -46,6 +46,6 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
           args: >
-            -Dsonar.projectKey=zonk_project
+            -Dsonar.projectKey=D4bleGunInVador_zonk_project
             -Dsonar.organization=d4bleguninvador
             -Dsonar.host.url=https://sonarcloud.io
