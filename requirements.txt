@@ -3,3 +3,8 @@ PyOpenGL
 Pillow
 pytest
 cloc
+flake8
+pytest
+pytest-cov
+pytest-html
+cloc

@@ -81,7 +81,7 @@ def draw_cube(texture_id):
 
     glEnd()
 
-def main():
+def test_example():
     pygame.init()
     display = (800, 600)
     pygame.display.set_mode(display, DOUBLEBUF | OPENGL)
