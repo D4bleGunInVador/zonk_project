@@ -40,17 +40,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Count lines of code with Cloc
+      - name: Install SonarQube Scanner
         run: |
-          sudo apt-get install -y cloc
-          cloc src/ > cloc-report.txt
-          cat cloc-report.txt
+          wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.8.0.2856-linux.zip
+          unzip sonar-scanner-cli-4.8.0.2856-linux.zip
+          export PATH=$PATH:$(pwd)/sonar-scanner-4.8.0.2856-linux/bin
 
       - name: Run SonarQube analysis
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
-          wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.8.0.2856-linux.zip
-          unzip sonar-scanner-cli-4.8.0.2856-linux.zip
-          export PATH=$PATH:$(pwd)/sonar-scanner-4.8.0.2856-linux/bin
-          sonar-scanner
+          sonar-scanner -Dsonar.projectKey=ZonkProject -Dsonar.organization=your_organization -Dsonar.host.url=https://sonarcloud.io
