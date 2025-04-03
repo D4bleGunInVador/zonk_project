@@ -31,7 +31,6 @@ jobs:
               core.setFailed("Код-рев’ю не схвалено");
             } else {
               console.log("Код-рев’ю схвалено");
-            }
 
   analysis:
     runs-on: ubuntu-latest
@@ -39,6 +38,28 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Run Flake8 for linting
+        run: flake8 src/ --statistics --count
+
+      - name: Run Pytest with coverage
+        run: pytest --cov=src --cov-report=xml --cov-report=term
+
+      - name: Run Cloc for code metrics
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cloc
+          cloc src/ > cloc-report.txt
+          cat cloc-report.txt
 
       - name: Run SonarCloud analysis
         uses: SonarSource/sonarcloud-github-action@v2
@@ -49,4 +70,3 @@ jobs:
             -Dsonar.projectKey=D4bleGunInVador_zonk_project
             -Dsonar.organization=d4bleguninvador
             -Dsonar.host.url=https://sonarcloud.io
-
