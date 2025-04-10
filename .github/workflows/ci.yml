@@ -1,4 +1,3 @@
-#
 name: CI Pipeline for Zonk
 
 on:
@@ -7,7 +6,6 @@ on:
   pull_request:
     branches: [main]
 
-
 jobs:
   review-check:
     runs-on: ubuntu-latest
@@ -15,9 +13,27 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Тимчасове автоматичне схвалення
-        run: echo "Код-рев’ю автоматично схвалено (тимчасово)"
+      - name: Перевірка наявності схваленого код-рев’ю
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const prNumber = context.payload.pull_request.number;
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
 
+            const reviews = await github.rest.pulls.listReviews({
+              owner: owner,
+              repo: repo,
+              pull_number: prNumber,
+            });
+
+            const approved = reviews.data.some(review => review.state === 'APPROVED');
+            if (!approved) {
+              core.setFailed("Код-рев’ю не схвалено");
+            } else {
+              console.log("Код-рев’ю схвалено");
+            }
 
   analysis:
     runs-on: ubuntu-latest
@@ -34,7 +50,7 @@ jobs:
       - name: Install dependencies
         run: |
           pip install -r requirements.txt
-          pip install pytest pytest-cov flake8 cloc
+          pip install pytest pytest-cov flake8 black cloc
 
       - name: Setup virtual display (Xvfb)
         run: |
@@ -45,6 +61,20 @@ jobs:
 
       - name: Run Flake8 for linting
         run: flake8 src/ --statistics --count
+
+      - name: Запуск flake8 через Reviewdog
+        uses: reviewdog/action-flake8@v2
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          reporter: github-pr-review
+          level: error
+
+      - name: Запуск Black через Reviewdog
+        uses: reviewdog/action-black@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          reporter: github-pr-review
+          level: info
 
       - name: Set PYTHONPATH
         run: echo "PYTHONPATH=$PYTHONPATH:$(pwd)/src" >> $GITHUB_ENV
@@ -71,3 +101,11 @@ jobs:
             -Dsonar.projectKey=D4bleGunInVador_zonk_project
             -Dsonar.organization=d4bleguninvador
             -Dsonar.host.url=https://sonarcloud.io
+
+      - name: Перевірка змін у гілці develop
+        run: |
+          git fetch origin develop
+          git checkout develop
+          git pull origin develop
+          git log --oneline --graph -n 10 > develop_changes.txt
+          cat develop_changes.txt
