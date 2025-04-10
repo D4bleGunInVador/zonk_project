@@ -1,8 +1,11 @@
 name: CI Pipeline for Zonk
 
 on:
+  push:
+    branches: [main]
   pull_request:
-    branches: [develop]
+    branches: [main]
+
 
 jobs:
   review-check:
