@@ -101,3 +101,11 @@ jobs:
             -Dsonar.projectKey=D4bleGunInVador_zonk_project
             -Dsonar.organization=d4bleguninvador
             -Dsonar.host.url=https://sonarcloud.io
+
+      - name: Перевірка змін у гілці develop
+        run: |
+          git fetch origin develop
+          git checkout develop
+          git pull origin develop
+          git log --oneline --graph -n 10 > develop_changes.txt
+          cat develop_changes.txt
