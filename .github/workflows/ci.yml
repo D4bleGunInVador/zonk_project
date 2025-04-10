@@ -60,6 +60,9 @@ jobs:
       - name: Run Flake8 for linting
         run: flake8 src/ --statistics --count
 
+      - name: Set PYTHONPATH
+        run: echo "PYTHONPATH=$PYTHONPATH:$(pwd)/src" >> $GITHUB_ENV
+
       - name: Run Pytest with coverage
         env:
           DISPLAY: :99
