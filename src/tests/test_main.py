@@ -4,6 +4,8 @@ import sys
 import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
+test = 10 
+
 # Мокаємо всі OpenGL/pygame-функції, які не працюють у CI середовищі
 @patch("OpenGL.GL.glEnable")
 @patch("OpenGL.GL.glTexParameteri")
