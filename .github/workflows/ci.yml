@@ -68,6 +68,9 @@ jobs:
           DISPLAY: :99
         run: pytest --cov=src --cov-report=xml --cov-report=term src/tests
 
+      - name: Install cloc
+        run: sudo apt-get update && sudo apt-get install -y cloc
+
       - name: Run Cloc for code metrics
         run: |
           cloc src/ > cloc-report.txt
