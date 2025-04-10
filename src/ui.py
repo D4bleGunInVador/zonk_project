@@ -1,10 +1,12 @@
 # ui.py
 import pygame
 
+
 # Розміри та позиції кнопок
 BUTTON_WIDTH = 180
 BUTTON_HEIGHT = 50
 MARGIN = 30
+
 
 # Прямокутники кнопок
 button_throw = pygame.Rect(MARGIN, 700, BUTTON_WIDTH, BUTTON_HEIGHT)
