@@ -11,6 +11,8 @@ from config import CUBE_POSITIONS
 from raycast import get_ray
 from ui import draw_buttons, check_button_click, draw_score
 
+xyz = 111
+
 def main():
     pygame.init()
     display = (1000, 800)
