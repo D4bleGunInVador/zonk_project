@@ -65,4 +65,5 @@ def test_example(
     gluPerspective(45, (display[0] / display[1]), 0.1, 50.0)
     glTranslatef(0.0, 0.0, -6)
 
+    # Один раз викликаємо рендер-функцію без анімації
     draw_cube(texture)
