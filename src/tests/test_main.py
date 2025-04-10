@@ -90,7 +90,7 @@ def test_example():
     glEnable(GL_DEPTH_TEST)
     glEnable(GL_TEXTURE_2D)
 
-    texture = load_texture("Dice.png")  
+    texture = load_texture("assets/Dice.png")
 
     gluPerspective(45, (display[0] / display[1]), 0.1, 50.0)
     glTranslatef(0.0, 0.0, -6)
