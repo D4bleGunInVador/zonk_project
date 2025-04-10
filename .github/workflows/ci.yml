@@ -20,13 +20,18 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const prNumber = context.payload.pull_request.number;
-            const owner = context.repo.owner;
-            const repo = context.repo.repo;
+            const pr = context.payload.pull_request;
+            if (!pr || !pr.number) {
+              core.setFailed("Цей workflow має запускатися лише з pull request.");
+              return;
+            }
+
+            const prNumber = pr.number;
+            const { owner, repo } = context.repo;
 
             const reviews = await github.rest.pulls.listReviews({
-              owner: owner,
-              repo: repo,
+              owner,
+              repo,
               pull_number: prNumber,
             });
 
@@ -36,6 +41,7 @@ jobs:
             } else {
               console.log("Код-рев’ю схвалено");
             }
+
 
   analysis:
     runs-on: ubuntu-latest
