@@ -74,3 +74,6 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+def test_reviewdog(a,b):print(a+b)
